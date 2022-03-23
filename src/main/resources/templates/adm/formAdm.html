@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<style>	
+form {
+	position: absolute;
+	margin-left: 700px;
+	margin-top: 200px;
+}
+
+.msgsucesso{
+	margin-top:25px;
+	font-family:'Open Sans', sans-serif;
+	color:#37E649;
+	font-size: 30px;
+	
+}
+.h2{
+margin-left:600px;
+}
+
+
+</style>
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap"
+	rel="stylesheet">
+
+<meta charset="utf-8">
+<title>Formulário Administrador</title>
+</head>
+<body>
+	<section class="letra">
+		<div class="h2">
+		<h2>Cadastro de administrador</h2>
+		</div>
+	</section>
+	
+	
+
+	<form method="post" action="salvarAdmin">
+		<input type="hidden" name="id" />
+		<div class="row">
+			<form class="col s12">
+				<div class="row">
+					<div class="input-field col s6">
+						<input required="required" placeholder="Insira seu nome"
+							name="nome" id="first_name" type="text" class="validate">
+						<label for="first_name">Nome:</label>
+					</div>
+					<div class="input-field col s6">
+						<input required="required" placeholder="Insira seu email"
+							id="last_name" type="text" name="email" class="validate">
+						<label for="last_name">Email:</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s12">
+						<input required="required" name="senha"
+							placeholder="Insira sua senha" type="password" class="validate">
+						<label>Senha:</label>
+					</div>
+			</form>
+		</div>
+		<button class="btn waves-effect waves-light" type="submit"
+			name="action">
+			Submit <i class="material-icons right">send</i>
+		</button>
+		
+		<div th:replace="fragments/mensagem"></div>
+
+		
+</body>
+</html>
