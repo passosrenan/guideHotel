@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<title>Form Restaurante</title>
+<style>
+body {
+	background-color: #ededf2;
+}
+
+form {
+	margin-left: 405px !important;
+	width: 60% !important;
+	margin-top: 200px !important;
+	border-radius: 20px !important;
+	border: 2px solid white !important;
+	background-color: white;
+	padding: 25px !important;
+	text-align: center !important;
+	margin-right: 100px !important;
+	padding-left: 30px !important;
+}
+
+h1 {
+	text-align: center;
+}
+
+.h11 {
+	font-size: 30px;
+	color: #59baa9;
+}
+
+span{
+margin:20px;
+}
+</style>
+</head>
+<body>
+	<h1>Formulário Hótel</h1>
+	<div class="row">
+		<form method="get" class="col s12" action="salvarHotel" enctype="multipart/form-data" accept-charset="utf-8">
+			<input type="hidden" name="id" />
+			<div class="row">
+				<div class="input-field col s6">
+					<input required="required" name="nome" th:value="${hoteis?.nome}" placeholder="Nome do restaurante" id="first_name" type="text"
+						class="validate"> <label for="first_name">Nome do
+						restaurante</label>
+				</div>
+
+				<div class="input-field col s6">
+					<input th:value="${hoteis?.descricao}" required="required" name="descricao" id="last_name" type="text" class="validate">
+					<label for="last_name">Descrição</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s12">
+					<input th:value="${hoteis?.cep}" name="cep" id="cep" type="text" > <label>CEP</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s12">
+					<input th:value="${hoteis?.endereco}" name="endereco" readonly="readonly" id="logradouro" type="text" class="validate">
+					<label for="password">Endereço</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s12">
+					<input th:value="${hoteis?.bairro}" name="bairro" id="bairro" type="text" placeholder="Bairro">
+					<label for="email">Bairro</label>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="input-field col s12">
+					<input th:value="${hoteis?.complemento}" name="complemento" id="email" type="text" class="validate">
+					<label for="email">Complemento</label>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="input-field col s12">
+					<input th:value="${hoteis?.numero}" required="required" name="numero" id="email" type="text" class="validate">
+					<label for="email">Numero</label>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="input-field col s12">
+					<input th:value="${hoteis?.site}" required="required" name="site" id="email" type="text" class="validate">
+					<label for="email">Site</label>
+				</div>
+			</div>
+			
+
+			<div class="row">
+				<div class="input-field col s12">
+					<input th:value="${hoteis?.uf}" readonly="readonly" name="uf" id="uf" type="text" placeholder="UF" > <label
+						for="email">UF</label>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="input-field col s12">
+					<input th:value="${hoteis?.telefone}" required="required" name="telefone" id="email" type="text" class="validate">
+					<label for="email">Telefone</label>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="input-field col s12">
+					<input th:value="${hoteis?.cidade}" name="cidade" id="localidade" readonly="readonly" type="text" placeholder="Cidade" class="validate">
+					<label for="email">Cidade</label>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="input-field col s12">
+					<input th:value="${hoteis?.redesSociais}" name="redesSociais" id="email" type="text" class="validate">
+					<label for="email">Redes Sociais</label>
+				</div>
+			</div>
+
+			<label> <input name="wifi" type="checkbox" class="filled-in"
+				checked="checked" /> <span>Wi-fi</span>
+			</label> <label> <input name="estacionamento" type="checkbox"
+				class="filled-in" checked="checked" /> <span>Estacionamento</span>
+			</label> 
+			
+			
+			<h3>Selecione Tipo de Hótel</h3>
+			 <select required="required" th:selected="t.id"
+				class="browser-default" name="tipo.id">
+				<option th:each="t: ${tipos}" th:text="${t.nome}" th:selected="${t.id == hoteis?.tipos?.id}"> </option>
+			</select>
+
+			
+				<div class="file-field input-field">
+					<div class="btn">
+						<span>Fotos</span> <input name="fileFotos" accept="image/*" multiple="multiple" type="file">
+					</div>
+					<div class="file-path-wrapper">
+						<input class="file-path validate" type="text">
+
+					</div>
+				</div>
+					
+
+
+			<button class="btn waves-effect waves-light" type="submit"
+				name="action">
+				Submit <i class="material-icons right">send</i>
+			</button>
+		</form>
+	</div>
+
+
+	<script src="/js/cep.js"></script>
+
+
+</body>
+</html>

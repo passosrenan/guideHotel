@@ -32,6 +32,12 @@ public class Administrador {
 		//aplica o hash e seta a senha no objeto
 		this.senha = HashUtil.hash256(senha);
 	}
+	
+	//metodo para setar senha sem aplicar hash
+	public void setSenhaComHash(String hash) {
+		//seta o hash na senha
+		this.senha = hash;
+	}
 
 }
 

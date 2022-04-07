@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.senai.sp.cfp138.hotelguide.model.Administrador;
 import br.senai.sp.cfp138.hotelguide.repository.AdminRepository;
+import br.senai.sp.cfp138.hotelguide.util.HashUtil;
 
 @Controller
 public class AdmController {
@@ -38,6 +39,20 @@ public class AdmController {
 		if (result.hasErrors()) {
 			attr.addFlashAttribute("mensagemErro", "Verifique os campos...");
 			return "redirect:formularioADM";
+		}
+		//verifica se esta sendo feita uma alteração ao inves de uma inserçao
+		boolean alteracao = admin.getId()!= null ? true : false;
+		
+		//verifica se a senha estáa vazia
+		if(admin.getSenha().equals(HashUtil.hash256(""))) {
+			if(!alteracao) {
+				//extrai a parte do e-mail antes do @
+				String parte = admin.getEmail().substring(0,admin.getEmail().indexOf("@"));
+				//define a senha do admin
+				admin.setSenha(parte);
+			}else {
+				
+			}
 		}
 
 		try {

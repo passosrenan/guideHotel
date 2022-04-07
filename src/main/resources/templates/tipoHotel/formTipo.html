@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+ <i class="material-icons"></i>
+ <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<meta charset="utf-8">
+<title>Formulário Tipo de Hóteis</title>
+</head>
+<style>
+body{
+background-color: #ededf2;
+}
+
+form {
+	position: absolute !important;
+	margin-left: 700px !important;
+	margin-top: 200px !important;
+	border-radius:20px !important;
+	border: 2px solid white !important;
+	background-color: white;
+	padding: 25px;
+	text-align: center;
+}
+
+.msgsucesso{
+	margin-top:20px;
+	font-family:'Open Sans', sans-serif;
+	color:#37E649;
+	font-size: 30px;
+	
+}
+.h2{
+margin-left:650px;
+}
+.h11{
+font-size: 30px;
+color:#59baa9; 
+}
+
+
+
+</style>
+<body>
+		<form method="post" action="salvarTipo">
+		<input type="hidden" name="id" />
+		<div class="row">
+			<form class="col s12">
+			<h1 class="h11">Formulário de Tipos</h1>
+				
+					<div class="input-field col s6">
+						<input th:value="${tipos?.nome}" required="required" placeholder="Insira o nome"
+							name="nome" id="first_name" type="text" class="validate">
+						<label for="first_name">Nome:</label>
+					</div>
+					<div class="input-field col s6">
+						<input th:value="${tipos?.descricao}" required="required" placeholder="descricao"
+							id="last_name" type="text" name="descricao" class="validate">
+						<label for="last_name">Descrição:</label>
+					</div>
+				<div class="row">
+					<div class="input-field col s12">
+						<input th:value="${tipos?.palavraChave}" required="required" name="palavraChave"
+							placeholder="Insira uma palavra Chave" type="text" class="validate">
+						<label>Palavra Chave:</label>
+					</div>
+			</form>
+			
+		</div>
+		<button class="btn waves-effect waves-light" type="submit"
+			name="action">
+			Submit <i class="material-icons right">send</i>
+		</button>
+		
+		<div th:replace="fragments/mensagem"></div>
+		
+
+
+</body>
+</html>

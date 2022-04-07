@@ -30,7 +30,11 @@ margin-top: 100px;
 background-color: #8cb0b0;
 border-radius:20px !important;
 margin-left: 90px;
+margin-top: 100px;
 
+}
+a:hover{
+color:#006d77;
 }
 
 
@@ -57,6 +61,7 @@ margin-left: 90px;
 			<td th:text="${adm.id}"></td>
 			<td th:text="${adm.nome}"></td>
 			<td th:text="${adm.email}"></td>
+			<td th:text="${adm.senha}"></td>
 			<td><a th:href="@{/alterarAdmin(id=${adm.id})}">Alterar</a></td>
 			<td><a th:href="@{/excluirAdmin(id=${adm.id})}">Excluir</a></td>
 		</tr>

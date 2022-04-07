@@ -1,40 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
 <head>
-<style>	
-body{
-background-color: #ededf2;
+<style>
+body {
+	background-color: #ededf2;
 }
 
 form {
 	position: absolute !important;
 	margin-left: 700px !important;
 	margin-top: 200px !important;
-	border-radius:20px !important;
+	border-radius: 20px !important;
 	border: 2px solid white !important;
 	background-color: white;
 	padding: 25px;
 	text-align: center;
 }
 
-.msgsucesso{
-	margin-top:20px;
-	font-family:'Open Sans', sans-serif;
-	color:#37E649;
+.msgsucesso {
+	margin-top: 20px;
+	font-family: 'Open Sans', sans-serif;
+	color: #37E649;
 	font-size: 30px;
-	
-}
-.h2{
-margin-left:650px;
-}
-.h11{
-font-size: 30px;
-color:#59baa9; 
 }
 
+.h2 {
+	margin-left: 650px;
+}
 
-
-
+.h11 {
+	font-size: 30px;
+	color: #59baa9; 
+}
 </style>
 <!-- Compiled and minified CSS -->
 <link rel="stylesheet"
@@ -49,52 +46,79 @@ color:#59baa9;
 <link
 	href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap"
 	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+<!-- Compiled and minified JavaScript -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
 <meta charset="utf-8">
 <title>Formulário Administrador</title>
 </head>
 <body>
+	<nav>
+		<div class="nav-wrapper">
+			<a href="#" class="brand-logo">Logo</a>
+			<ul id="nav-mobile" class="right hide-on-med-and-down">
+				<li><a href="sass.html">Sass</a></li>
+				<li><a href="badges.html">Components</a></li>
+				<li><a href="collapsible.html">JavaScript</a></li>
+			</ul>
+		</div>
+	</nav>
+
+	
+
 	<section class="letra">
 		<div class="h2">
-		<h2>Welcome administrator</h2>
+			<h2>Welcome administrator</h2>
 		</div>
 	</section>
-	
-	
+
+
 
 	<form method="post" action="salvarAdmin">
 		<input type="hidden" name="id" />
 		<div class="row">
 			<form class="col s12">
-			<h1 class="h11">Formulário administrador</h1>
-				<div class="row">
-				
-					<div class="input-field col s6">
-						<input th:value="${admins?.nome}" required="required" placeholder="Insira seu nome"
-							name="nome" id="first_name" type="text" class="validate">
-						<label for="first_name">Nome:</label>
-					</div>
-					<div class="input-field col s6">
-						<input th:value="${admins?.email}" required="required" placeholder="Insira seu email"
-							id="last_name" type="text" name="email" class="validate">
-						<label for="last_name">Email:</label>
-					</div>
+				<h1 class="h11">Formulário administrador</h1>
+
+
+				<div class="input-field col s6">
+					<input th:value="${admins?.nome}" required="required"
+						placeholder="Insira seu nome" name="nome" id="first_name"
+						type="text" class="validate"> <label for="first_name">Nome:</label>
+				</div>
+				<div class="input-field col s6">
+					<input th:value="${admins?.email}" required="required"
+						placeholder="Insira seu email" id="last_name" type="text"
+						name="email" class="validate"> <label for="last_name">Email:</label>
 				</div>
 				<div class="row">
 					<div class="input-field col s12">
-						<input th:value="${admins?.senha}" required="required" name="senha"
-							placeholder="Insira sua senha" type="password" class="validate">
-						<label>Senha:</label>
+						<input th:value="${admins?.senha}" required="required"
+							name="senha" placeholder="Insira sua senha" type="password"
+							class="validate"> <label>Senha:</label>
 					</div>
 			</form>
+
 		</div>
 		<button class="btn waves-effect waves-light" type="submit"
 			name="action">
 			Submit <i class="material-icons right">send</i>
 		</button>
-		
-		<div th:replace="fragments/mensagem"></div>
 
+		<div th:replace="fragments/mensagem"></div>
+		
+		 <script src="https://code.jquery.com/jquery-3.2.1.min.js">
+			 	$(document).ready(function(){
+			    $('select').formSelect();
+			  	});		 
+		 </script>
+
+
+		
 		
 </body>
 </html>

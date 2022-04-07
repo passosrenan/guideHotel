@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<i class="material-icons">add</i>
+<meta charset="utf-8">
+<title>Lista de hotel</title>
+</head>
+<body>
+<table class="striped">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Nome</th>
+				<th>Descricão</th>
+				<th>CEP</th>
+				<th>Endereço</th>
+				<th>Numero</th>
+				<th>Bairro </th>
+				<th>Cidade</th>
+				<th>UF</th>
+				<th>Tipo</th>
+				<th>Complemento</th>
+				<th>Site</th>
+				<th>Telefone</th>
+			</tr>
+		</thead>
+		<tbody>
+		<tr th:each="h:${hoteis}">
+			<td th:text="${h.id}"></td>
+			<td th:text="${h.nome}"></td>
+			<td th:text="${h.descricao}"></td>
+			<td th:text="${h.cep}"></td>
+			<td th:text="${h.endereco}"></td>
+			<td th:text="${h.numero}"></td>
+			<td th:text="${h.bairro}"></td>
+			<td th:text="${h.cidade}"></td>
+			<td th:text="${h.uf}"></td>
+			<td th:text="${h.tipo}"></td>
+			<td th:text="${h.complemento}"></td>
+			<td th:text="${h.site}"></td>
+			<td th:text="${h.telefone}"></td>
+			<td><a th:href="@{/alterarHotel(id=${h.id})}">Alterar</a></td>
+			<td><a th:href="@{/excluirHotel(id=${h.id})}">Excluir</a></td>
+		</tr>
+		</tbody>
+	</table>
+	</table>
+	<footer class="rodape">
+		<div class="roda">
+		<ul class="pagination">
+		
+		<li th:class="${paginaAtual == 1 ? 'disabled' : ''}">
+		<a th:href="${paginaAtual > 1 ? paginaAtual - 1 : '#'}">
+		<i class="material-icons">chevron_left</i></a></li>
+		
+		<li th:each="p:${numPaginas}" th:class="${paginaAtual == p ? 'active' : 'waves-effect'}">
+			<a th:href="${p}"><span th:text="${p}"></span></a>
+		</li>
+		
+		<li th:class="${paginaAtual == totalPaginas ? 'disabled' : ''}" >
+		<a th:href="${paginaAtual < totalPaginas ? paginaAtual + 1 : '#'}" ><i
+				class="material-icons">chevron_right</i></a></li>
+	</ul>
+		</div>
+		
+	</footer>
+
+</body>
+</html>
