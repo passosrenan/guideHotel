@@ -5,13 +5,18 @@ import java.util.UUID;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.auth.Credentials;
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 
+@Service
 public class FirebaseUtil {
 	// varivel para guardar as credenciais do firebase
 
@@ -24,7 +29,7 @@ public class FirebaseUtil {
 	private final String BUCKET_NAME = "hotelguide-f162b.appspot.com";
 
 	// cosntante para o prefixo da url enderço padrão do google
-	private final String PREFIX = "firebasestorage.googleapis.com/v0/b/" + BUCKET_NAME + "/o/";
+	private final String PREFIX = "https://firebasestorage.googleapis.com/v0/b/" + BUCKET_NAME + "/o/";
 
 	// constante para o sulfix da url
 	private final String SULFIX = "?alt=media";
@@ -50,10 +55,31 @@ public class FirebaseUtil {
 
 	}
 	
-	public String uploadFile(MultipartFile arquivo) {
+	public String uploadFile(MultipartFile arquivo) throws IOException {
 		//gera string aleatoria para o nome do arquivo 
 		String extensao = UUID.randomUUID().toString() + getExtensao(arquivo.getOriginalFilename());
-		return extensao;
+		BlobId blobID = BlobId.of(BUCKET_NAME, extensao);
+		
+		BlobInfo blobInfo = blobInfo = BlobInfo.newBuilder(blobID).setContentType("media").build();
+		
+		
+		//manda o blobinfo para o storage passando os bytes
+		storage.create(blobInfo, arquivo.getBytes());
+	
+		
+		return String.format(DOWLOAD_URL, extensao);
+	}
+	
+	//metodo para excluir a foto do firebase
+	public void deletar(String extensao) {
+		//retira o prexixo e sulfix do nome do arquivo
+		extensao = extensao.replace(PREFIX, "").replace(SULFIX, "");
+		
+		//Pega o blob atraves do nome do arquivo
+		Blob blobBlob = storage.get(BlobId.of(BUCKET_NAME, extensao));
+		
+		//deleta o arquivo 
+		storage.delete(blobBlob.getBlobId());
 	}
 	
 	private String getExtensao(String extensao) {

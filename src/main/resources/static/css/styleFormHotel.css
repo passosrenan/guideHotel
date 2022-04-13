@@ -1,0 +1,40 @@
+body {
+	background-color: #ededf2 !important;
+}
+
+form {
+	margin-left: 405px !important;
+	width: 60% !important;
+	margin-top: 200px !important;
+	border-radius: 20px !important;
+	border: 2px solid white !important;
+	background-color: white;
+	padding: 25px !important;
+	text-align: center !important;
+	margin-right: 100px !important;
+	padding-left: 30px !important;
+}
+
+h1 {
+	margin-bottom: 60px !important;
+}
+
+.h11 {
+	font-size: 30px !important;
+	color: #59baa9 !important;
+}
+
+span{
+margin:20px !important;
+}
+
+.img{
+	width: 70%;
+	height: 90vh;
+}
+.navbar{
+	height:70px !important;
+	background-color: #001233;
+	
+}
+

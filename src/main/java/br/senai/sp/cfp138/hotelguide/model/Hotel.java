@@ -37,4 +37,8 @@ public class Hotel {
 	private String telefone;
 	private String redesSociais;
 	
+	public String[] verFotos() {
+		return this.fotos.split(";");
+	}
+	
 }

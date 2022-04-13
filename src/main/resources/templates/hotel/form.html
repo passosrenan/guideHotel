@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
 <head>
+<link rel="stylesheet" href="/css/styleFormHotel.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 <script
@@ -10,42 +11,25 @@
 	rel="stylesheet">
 <title>Form Restaurante</title>
 <style>
-body {
-	background-color: #ededf2;
-}
 
-form {
-	margin-left: 405px !important;
-	width: 60% !important;
-	margin-top: 200px !important;
-	border-radius: 20px !important;
-	border: 2px solid white !important;
-	background-color: white;
-	padding: 25px !important;
-	text-align: center !important;
-	margin-right: 100px !important;
-	padding-left: 30px !important;
-}
 
-h1 {
-	text-align: center;
-}
-
-.h11 {
-	font-size: 30px;
-	color: #59baa9;
-}
-
-span{
-margin:20px;
-}
 </style>
 </head>
 <body>
-	<h1>Formulário Hótel</h1>
+	<nav class="navbar">
+		<div class="nav-wrapper">
+			<a href="#" class="brand-logo">Cadastro de hoteis</a>
+			<ul id="nav-mobile" class="right hide-on-med-and-down">
+				<li><a href="/listarHoteis/1">Lista de Hoteis</a></li>
+			</ul>
+		</div>
+	</nav>
+	
 	<div class="row">
-		<form method="get" class="col s12" action="salvarHotel" enctype="multipart/form-data" accept-charset="utf-8">
-			<input type="hidden" name="id" />
+	
+		<form method="post" class="col s12" action="salvarHotel" enctype="multipart/form-data" accept-charset="utf-8">
+			<input type="hidden" name="id" th:value="${hoteis?.id}"/>
+			<h1>Formulário Hótel</h1>
 			<div class="row">
 				<div class="input-field col s6">
 					<input required="required" name="nome" th:value="${hoteis?.nome}" placeholder="Nome do restaurante" id="first_name" type="text"
@@ -134,9 +118,8 @@ margin:20px;
 			
 			
 			<h3>Selecione Tipo de Hótel</h3>
-			 <select required="required" th:selected="t.id"
-				class="browser-default" name="tipo.id">
-				<option th:each="t: ${tipos}" th:text="${t.nome}" th:selected="${t.id == hoteis?.tipos?.id}"> </option>
+			 <select class="browser-default" name="tipo.id">
+			<option th:each="t: ${tipos}" th:text="${t.nome}" th:value="${t.id}" th:selected="${t.id == hoteis?.tipo?.id}"> </option>
 			</select>
 
 			
@@ -148,6 +131,26 @@ margin:20px;
 						<input class="file-path validate" type="text">
 
 					</div>
+				</div>
+				
+				<div th:if="${hoteis?.fotos?.length > 0}">
+					<h3>Fotos cadastradas</h3>
+					<div>
+						<ul>
+							<li th:each="foto, i :${hoteis?.verFotos()}">
+								<a th:href="${foto}" target="_blank"><img class="img" th:src="${foto}"></a>
+								<a th:href=
+								"@{/excluirFoto(idHotel=${hoteis.id}, numFoto = ${i.index})}">
+									<i class="material-icons">delete_forever</i>
+								</a>
+							</li>
+							
+						</ul>
+						
+					</div>
+				
+				
+				
 				</div>
 					
 

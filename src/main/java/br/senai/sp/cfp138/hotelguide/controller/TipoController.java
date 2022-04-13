@@ -38,11 +38,11 @@ public class TipoController {
 		return "redirect:listarTipos/1";
 	}
 	
-	@RequestMapping("listarTipos/{totalElements}/{page}")
-	public String listar(Model model, @PathVariable("page") int page, @PathVariable("totalElements") int totalElements) {
+	@RequestMapping("listarTipos/{page}")
+	public String listar(Model model, @PathVariable("page") int page) {
 		// cria um pageable com 6 elementos por página, ordenando os objetos pelo nome,
 		// de forma ascendete
-		PageRequest pageable = PageRequest.of(page - 1, totalElements, Sort.by(Sort.Direction.ASC, "nome"));
+		PageRequest pageable = PageRequest.of(page - 1, 6, Sort.by(Sort.Direction.ASC, "nome"));
 
 		// cria a página atual através do repository
 		Page<TipoHotel> pagina = tipo.findAll(pageable);
@@ -62,7 +62,6 @@ public class TipoController {
 		model.addAttribute("tipos", pagina.getContent());
 		model.addAttribute("paginaAtual", page);
 		model.addAttribute("totalPaginas", totalPages);
-		model.addAttribute("totalElements", totalElements);
 		model.addAttribute("numPaginas", pageNumbers);
 
 		return "tipoHotel/lista";

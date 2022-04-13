@@ -1,12 +1,13 @@
 package br.senai.sp.cfp138.hotelguide.controller;
 
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.elasticsearch.RestClientBuilderCustomizer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -22,36 +23,55 @@ import br.senai.sp.cfp138.hotelguide.model.Hotel;
 import br.senai.sp.cfp138.hotelguide.model.TipoHotel;
 import br.senai.sp.cfp138.hotelguide.repository.HotelRepository;
 import br.senai.sp.cfp138.hotelguide.repository.TipoRepository;
+import br.senai.sp.cfp138.hotelguide.util.FirebaseUtil;
 
 @Controller
 public class HotelController {
-		
+
 	@Autowired
-	private TipoRepository reptipo;
+	TipoRepository reptipo;
+
+	@Autowired
+	HotelRepository hotelrepo;
 	
 	@Autowired
-	private HotelRepository hotelrepo;
-	
+	FirebaseUtil fire;
+
 	@RequestMapping("formHotel")
 	public String form(Model model) {
 		model.addAttribute("tipos", reptipo.findAllByOrderByNomeAsc());
 		return "hotel/form";
 	}
 
-
 	@RequestMapping("salvarHotel")
-		public String salvarAdmin(Hotel hotel, @RequestParam("fileFotos") MultipartFile[] fileFotos) {
-		System.out.println(fileFotos.length);
-		//hotelrepo.save(hotel);
+	public String salvarAdmin(Hotel hotel, @RequestParam("fileFotos") MultipartFile[] fileFotos) {
+		//string para url das fotos
+		String fotos = "";
+
+		// percorre cada arquivo que foi submetido no formulario
+		for (MultipartFile multipartFile : fileFotos) {
+			if (multipartFile.getOriginalFilename().isEmpty()) {
+				// vai para o próximo arquivo
+				continue;
+			}
+			//faz upload para a nuvem e obtem a url gerada
+			try {
+				fotos += fire.uploadFile(multipartFile)+";";
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+		}
+		hotel.setFotos(fotos);
+		hotelrepo.save(hotel);
 		return "redirect:listarHoteis/1";
-}
-	
-	
-	@RequestMapping("listarHoteis/{totalElements}/{page}")
-	public String listarHoteis(Model model, @PathVariable("page") int page, @PathVariable("totalElements") int totalElements) {
+	}
+
+	@RequestMapping("listarHoteis/{page}")
+	public String listarHoteis(Model model, @PathVariable("page") int page ) {
 		// cria um pageable com 6 elementos por página, ordenando os objetos pelo nome,
 		// de forma ascendete
-		PageRequest pageable = PageRequest.of(page - 1, totalElements, Sort.by(Sort.Direction.ASC, "nome"));
+		PageRequest pageable = PageRequest.of(page - 1, 6, Sort.by(Sort.Direction.ASC, "nome"));
 
 		// cria a página atual através do repository
 		Page<Hotel> pagina = hotelrepo.findAll(pageable);
@@ -71,28 +91,45 @@ public class HotelController {
 		model.addAttribute("hoteis", pagina.getContent());
 		model.addAttribute("paginaAtual", page);
 		model.addAttribute("totalPaginas", totalPages);
-		model.addAttribute("totalElements", totalElements);
 		model.addAttribute("numPaginas", pageNumbers);
 
 		return "hotel/lista";
 	}
-	
-	
+
 	@RequestMapping("alterarHotel")
 	public String alterarCliente(Model model, Long id) {
 		Hotel hoteis = hotelrepo.findById(id).get();
-		model.addAttribute("hoteis", hoteis );
+		model.addAttribute("hoteis", hoteis);
 		return "forward:formHotel";
 	}
-	
+
 	@RequestMapping("excluirHotel")
 	public String excluirHotel(Long id) {
 		hotelrepo.deleteById(id);
 		return "redirect:listarHoteis/1";
 	}
 	
-	
-	
-	
-	
+	@RequestMapping("excluirFoto")
+	public String excluirFoto(Long idHotel, int numFoto, Model model) {
+		// busca o restaurante no bd
+		Hotel hotel = hotelrepo.findById(idHotel).get();
+		//pega a string da foto a ser excluída
+		
+		String fotoUrl = hotel.verFotos()[numFoto];
+		
+		//excluir do firebase
+		fire.deletar(fotoUrl);
+		
+		hotel.setFotos(hotel.getFotos().replace(fotoUrl+"", ""));
+		
+		//salva no bd o objeto hotel
+		hotelrepo.save(hotel);
+		
+		//adiciona o hotel na model
+		model.addAttribute("hotel", hotel);
+		
+		return "forward:/formHotel";
+
+	}
+
 }

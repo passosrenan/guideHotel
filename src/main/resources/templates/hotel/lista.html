@@ -1,11 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html  xmlns:th="http://thymeleaf.org">
 <head>
-<i class="material-icons">add</i>
+ <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>            
 <meta charset="utf-8">
 <title>Lista de hotel</title>
 </head>
+<style>
+body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 19px;
+}
+
+.rodape {
+	margin-left: 750px;
+	margin-top: 100px;
+}
+
+.striped {
+	background-color: #8cb0b0;
+	margin-top: 20px;
+}
+
+</style>
 <body>
+<nav>
+		<div class="nav-wrapper">
+			<a href="#" class="brand-logo">Lista de Hoteis</a>
+			<ul id="nav-mobile" class="right hide-on-med-and-down">
+				<li><a href="/formHotel">Cadastro Hotel</a></li>
+			</ul>
+		</div>
+	</nav>
+
+
 <table class="striped">
 		<thead>
 			<tr>
@@ -21,7 +50,11 @@
 				<th>Tipo</th>
 				<th>Complemento</th>
 				<th>Site</th>
+				<th>Redes Sociais</th>				
 				<th>Telefone</th>
+				<th>Fotos</th>
+				<th>Alterar</th>
+				<th>Excluir</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -38,13 +71,15 @@
 			<td th:text="${h.tipo}"></td>
 			<td th:text="${h.complemento}"></td>
 			<td th:text="${h.site}"></td>
+			<td th:text="${h.redesSociais}"></td>
 			<td th:text="${h.telefone}"></td>
+			<td style="display: flex !important"><img style="width: 150px;" th:each="a: ${h.verFotos()}" th:src="${a}" alt="imagens"></td>
 			<td><a th:href="@{/alterarHotel(id=${h.id})}">Alterar</a></td>
 			<td><a th:href="@{/excluirHotel(id=${h.id})}">Excluir</a></td>
 		</tr>
 		</tbody>
 	</table>
-	</table>
+	
 	<footer class="rodape">
 		<div class="roda">
 		<ul class="pagination">
