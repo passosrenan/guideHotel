@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.naming.Binding;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.senai.sp.cfp138.hotelguide.anotation.Publica;
 import br.senai.sp.cfp138.hotelguide.model.Administrador;
 import br.senai.sp.cfp138.hotelguide.repository.AdminRepository;
 import br.senai.sp.cfp138.hotelguide.util.HashUtil;
@@ -40,18 +42,18 @@ public class AdmController {
 			attr.addFlashAttribute("mensagemErro", "Verifique os campos...");
 			return "redirect:formularioADM";
 		}
-		//verifica se esta sendo feita uma alteração ao inves de uma inserçao
-		boolean alteracao = admin.getId()!= null ? true : false;
-		
-		//verifica se a senha estáa vazia
-		if(admin.getSenha().equals(HashUtil.hash256(""))) {
-			if(!alteracao) {
-				//extrai a parte do e-mail antes do @
-				String parte = admin.getEmail().substring(0,admin.getEmail().indexOf("@"));
-				//define a senha do admin
+		// verifica se esta sendo feita uma alteração ao inves de uma inserçao
+		boolean alteracao = admin.getId() != null ? true : false;
+
+		// verifica se a senha estáa vazia
+		if (admin.getSenha().equals(HashUtil.hash256(""))) {
+			if (!alteracao) {
+				// extrai a parte do e-mail antes do @
+				String parte = admin.getEmail().substring(0, admin.getEmail().indexOf("@"));
+				// define a senha do admin
 				admin.setSenha(parte);
-			}else {
-				
+			} else {
+
 			}
 		}
 
@@ -108,6 +110,29 @@ public class AdmController {
 	public String excluirCliente(Long id) {
 		repoAdm.deleteById(id);
 		return "redirect:listarAdmin/1";
+	}
+
+	@Publica
+	@RequestMapping("login")
+	public String login(Administrador adm, RedirectAttributes attr, HttpSession sessao) {
+		// buscar o adm no banco de dados através do e-mail e senha
+		Administrador admin = repoAdm.findByEmailAndSenha(adm.getEmail(), adm.getSenha());
+
+		if (admin == null) {
+			attr.addFlashAttribute("mensagemErro", "Login e/ou senha inválido(s)");
+			return "redirect:/";
+
+		}else {
+			sessao.setAttribute("usuarioLogado", admin);
+			//se não for nulo, salva na sessão e acessa o sistema
+			return "redirect:/listarHoteis/1";
+		}
+	}
+	
+	public String logout(HttpSession session) {
+		session.invalidate();
+		//retorna para a página inicial
+		return "redirect:/";
 	}
 
 }

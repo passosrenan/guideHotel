@@ -36,6 +36,7 @@ public class HotelController {
 	
 	@Autowired
 	FirebaseUtil fire;
+	
 
 	@RequestMapping("formHotel")
 	public String form(Model model) {
@@ -46,7 +47,7 @@ public class HotelController {
 	@RequestMapping("salvarHotel")
 	public String salvarAdmin(Hotel hotel, @RequestParam("fileFotos") MultipartFile[] fileFotos) {
 		//string para url das fotos
-		String fotos = "";
+		String fotos = hotel.getFotos();
 
 		// percorre cada arquivo que foi submetido no formulario
 		for (MultipartFile multipartFile : fileFotos) {
@@ -104,8 +105,14 @@ public class HotelController {
 	}
 
 	@RequestMapping("excluirHotel")
-	public String excluirHotel(Long id) {
-		hotelrepo.deleteById(id);
+	public String excluirHotel(Long idHotel) {
+		Hotel hotel = hotelrepo.findById(idHotel).get();
+		if(hotel.getFotos().length() > 0) {
+			for(String foto: hotel.verFotos()) {
+				fire.deletar(foto);
+			}
+		}
+		
 		return "redirect:listarHoteis/1";
 	}
 	
@@ -120,13 +127,13 @@ public class HotelController {
 		//excluir do firebase
 		fire.deletar(fotoUrl);
 		
-		hotel.setFotos(hotel.getFotos().replace(fotoUrl+"", ""));
+		hotel.setFotos(hotel.getFotos().replace(fotoUrl+";", ""));
 		
 		//salva no bd o objeto hotel
 		hotelrepo.save(hotel);
 		
 		//adiciona o hotel na model
-		model.addAttribute("hotel", hotel);
+		model.addAttribute("hoteis", hotel);
 		
 		return "forward:/formHotel";
 

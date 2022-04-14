@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<meta charset="utf-8">
+<title>Insert title here</title>
+</head>
+
+<header th:fragment="navbar">
+	<nav>
+		<div class="nav-wrapper">
+			<a href="#" class="brand-logo">Logo</a>
+			<ul id="nav-mobile" class="right hide-on-med-and-down"
+				th:if="${session.usuarioLogado != null}">
+				<li class="link"><a href="/formAdm">Form</a></li>
+				<li><a href="listarHoteis/1">Lista de Hóteis</a></li>
+				<li><a href="/formHotel">Form Hotel</a></li>
+				<li><a href="/listarHoteis/1">Listar Hóteis</a></li>
+				<li><a href="/listarAdmin/1">Lista Adm</a></li>
+				<li><a href="/login">Logout</a> <i class="material-icons">exit_to_app</i></li>
+			</ul>
+		</div>
+	</nav>
+</header>
+<body>
+
+	
+
+</body>
+</html>

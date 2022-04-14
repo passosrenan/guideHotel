@@ -121,6 +121,7 @@
 			 <select class="browser-default" name="tipo.id">
 			<option th:each="t: ${tipos}" th:text="${t.nome}" th:value="${t.id}" th:selected="${t.id == hoteis?.tipo?.id}"> </option>
 			</select>
+			
 
 			
 				<div class="file-field input-field">
@@ -132,12 +133,13 @@
 
 					</div>
 				</div>
+				<input type="hidden" th:value="${hoteis?.fotos}" name="fotos"/>
 				
 				<div th:if="${hoteis?.fotos?.length > 0}">
 					<h3>Fotos cadastradas</h3>
 					<div>
 						<ul>
-							<li th:each="foto, i :${hoteis?.verFotos()}">
+							<li th:each="foto, i : ${hoteis?.verFotos()}">
 								<a th:href="${foto}" target="_blank"><img class="img" th:src="${foto}"></a>
 								<a th:href=
 								"@{/excluirFoto(idHotel=${hoteis.id}, numFoto = ${i.index})}">
