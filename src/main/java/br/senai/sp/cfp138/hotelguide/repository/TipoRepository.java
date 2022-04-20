@@ -15,4 +15,5 @@ public interface TipoRepository extends PagingAndSortingRepository<TipoHotel, Lo
 	public List<TipoHotel> buscarKeyWord(@Param("p") String palavraChave);
 	
 	public List<TipoHotel> findAllByOrderByNomeAsc();
+	
 }

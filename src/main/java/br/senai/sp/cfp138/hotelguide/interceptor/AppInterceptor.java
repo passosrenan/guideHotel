@@ -32,17 +32,22 @@ public class AppInterceptor implements HandlerInterceptor {
 			// fazendo casting para HendlerMethod
 			HandlerMethod metodo = (HandlerMethod) handler;
 
-			// se o metodo for publico for publico, libera
-			if (metodo.getMethodAnnotation(Publica.class) != null) {
-				return true;
-			}
-			// verifica e exisrte um usuario logado
-			if (request.getSession().getAttribute("usuarioLogado") != null) {
+			if (uri.startsWith("/api")) {
 				return true;
 			} else {
-				// redireciona para a página inicial
-				response.sendRedirect("/");
-				return true;
+
+				// se o metodo for publico for publico, libera
+				if (metodo.getMethodAnnotation(Publica.class) != null) {
+					return true;
+				}
+				// verifica e exisrte um usuario logado
+				if (request.getSession().getAttribute("usuarioLogado") != null) {
+					return true;
+				} else {
+					// redireciona para a página inicial
+					response.sendRedirect("/");
+					return false;
+				}
 			}
 		}
 		return true;
