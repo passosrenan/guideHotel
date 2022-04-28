@@ -1,10 +1,11 @@
 package br.senai.sp.cfp138.hotelguide.rest;
 
-import java.util.List;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.senai.sp.cfp138.hotelguide.anotation.Publica;
 import br.senai.sp.cfp138.hotelguide.model.Hotel;
 import br.senai.sp.cfp138.hotelguide.repository.HotelRepository;
-
+@CrossOrigin
 @RequestMapping("/api/hotel")
 @RestController
 public class HotelRestController {
