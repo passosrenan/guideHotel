@@ -1,13 +1,24 @@
 package br.senai.sp.cfp138.hotelguide.interceptor;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.Claim;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.JWTVerifier;
+
+import br.senai.sp.cfp138.hotelguide.anotation.Privado;
 import br.senai.sp.cfp138.hotelguide.anotation.Publica;
+import br.senai.sp.cfp138.hotelguide.rest.UsuarioHotelController;
 
 @Component
 public class AppInterceptor implements HandlerInterceptor {
@@ -33,6 +44,39 @@ public class AppInterceptor implements HandlerInterceptor {
 			HandlerMethod metodo = (HandlerMethod) handler;
 
 			if (uri.startsWith("/api")) {
+				// variável para o token
+				String token = null;
+
+				// quando for um api
+				// se for um método privadi
+				if (metodo.getMethodAnnotation(Privado.class) != null) {
+					try {
+						// obtem o token da request
+						token = request.getHeader("Authorization");
+
+						// algoritmo para descriptografar
+						Algorithm algoritmo = Algorithm.HMAC256(UsuarioHotelController.SECRET);
+
+						// objeto para verificar o token
+						JWTVerifier verifier = JWT.require(algoritmo).withIssuer(UsuarioHotelController.EMISSOR).build();
+
+						// verificando se o token é valido
+						DecodedJWT jwt = verifier.verify(token);
+
+						// extrair os dados do payload
+						Map<String, Claim> payload = jwt.getClaims();
+
+						System.out.println(payload.get("nome_usuario"));
+						return true;
+					} catch (Exception e) {
+						if (token == null) {
+							response.sendError(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
+						} else {
+							response.sendError(HttpStatus.FORBIDDEN.value(), e.getMessage());
+						}
+						return false;
+					}
+				}
 				return true;
 			} else {
 

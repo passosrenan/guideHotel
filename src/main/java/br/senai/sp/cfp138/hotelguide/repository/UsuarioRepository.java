@@ -4,6 +4,6 @@ import br.senai.sp.cfp138.hotelguide.model.Usuario;
 
 public interface UsuarioRepository extends PagingAndSortingRepository<Usuario, Long> {
 	
-
+	public Usuario findByEmailAndSenha(String email, String senha);
 	
 }
